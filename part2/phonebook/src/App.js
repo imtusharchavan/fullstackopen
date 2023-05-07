@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 const Person = ({person}) => {
   return (
-    <li>{person.name}</li>
+    <p>{person.name}</p>
   )
 }
 
@@ -16,12 +16,19 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const newObject = {
-      name: newName
+
+    const alreadyExists = persons.find(person => person.name === newName);
+
+    if (alreadyExists) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      const newObject = {
+        name: newName
+      }
+      setPersons(persons.concat(newObject));
+      setNewName('');
     }
-    setPersons(persons.concat(newObject));
-    setNewName('');
-    }
+  }
   
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -39,11 +46,9 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map(person =>
-          <Person key={person.name} person={person} />
-        )}
-      </ul>
+      {persons.map(person =>
+        <Person key={person.name} person={person} />
+      )}
     </div>
   )
 }
